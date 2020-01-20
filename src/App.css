@@ -17,3 +17,12 @@ input[type=text] {
   vertical-align: middle;
   width: 220px;
 }
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card-container {
+  width: 250px;
+}

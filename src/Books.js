@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SearchArea from "./SearchArea"
-import axios from 'axios'
+import Booklist from "./Booklist"
+import request from 'superagent'
 
 class Books extends Component {
 
@@ -15,18 +16,36 @@ class Books extends Component {
 
   getBooks = (event) => {
     event.preventDefault()
-    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.searchField}`).then((response) => {
+    request
+    .get("https://www.googleapis.com/books/v1/volumes")
+    .query({q: this.state.searchField})
+    .then((data) => {
+      console.log(data)
+      const cleanData = this.cleanData(data)
       this.setState({
-        books: response.data
+        books: cleanData
       })
     })
+    }
+  
+
+  cleanData = (data) => {
+    const cleanData = data.body.items.map((book) => {
+      if (book.volumeInfo.hasOwnProperty('imageLinks') === false) {
+        book.volumeInfo['imageLinks'] = { thumbnail: "https://www.dyslexiacenterofutah.org/global/assets/images/unavailable.png"}
+      }
+      return book
+    })
+    return cleanData
   }
 
+ 
 
   render() {
     return (
       <div>
         <SearchArea getBooks={this.getBooks} handleSearch={this.handleSearch}/>
+        <Booklist books={this.state.books}/>
       </div>
     )
   }
