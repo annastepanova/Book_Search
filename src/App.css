@@ -21,6 +21,8 @@ input[type=text] {
 .list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  margin: 50px 20px
 }
 
 .card-container {
